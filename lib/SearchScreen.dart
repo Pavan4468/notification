@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 void main() {
   runApp(MyApp());
@@ -128,7 +129,7 @@ class _SearchScreenState extends State<SearchScreen> {
         price: '\₹1393',
         platform: 'Myntra',
         image: 'assets/allen.jpg',
-        url: 'https://www.myntra.com/shirts/allen+solly/allen-solly-slim-fit-self-design-textured-button-down-collar-pure-cotton-formal-shirt/24415204/buy'),
+        url: 'https://www.myntra.com/shirts/allen+solly/allen-solly-slim-fit-self-design-textured-button.dart-down-collar-pure-cotton-formal-shirt/24415204/buy'),
             Product(
         name: 'Allen Solly',
         price: '\₹3,114',
@@ -229,31 +230,61 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+
+
   void _submitForm() {
     final userName = _userNameController.text;
     final productName = _productNameController.text;
     final platform = _platformController.text;
 
-    // Here you can add logic to handle the form submission, like sending data to a server
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Form Submitted'),
-        content: Text(
-            'User: $userName\nProduct: $productName\nPlatform: $platform'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
+    if (userName.isNotEmpty && productName.isNotEmpty && platform.isNotEmpty) {
+      // Store data in Firebase Realtime Database
+      final database = FirebaseDatabase.instance.ref();
+      database.child("users").push().set({
+        'user_name': userName,
+        'product_name': productName,
+        'platform': platform,
+      }).then((_) {
+        print("Data stored successfully");
+        // Show success dialog
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Form Submitted'),
+            content: Text(
+                'User: $userName\nProduct: $productName\nPlatform: $platform'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        );
 
-    // Clear the form
-    _userNameController.clear();
-    _productNameController.clear();
-    _platformController.clear();
+        // Clear the form fields
+        _userNameController.clear();
+        _productNameController.clear();
+        _platformController.clear();
+      }).catchError((error) {
+        print("Failed to store data: $error");
+      });
+    } else {
+      // Show error if any field is empty
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Error'),
+          content: Text('Please fill in all fields.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
@@ -277,109 +308,110 @@ class _SearchScreenState extends State<SearchScreen> {
             SizedBox(height: 10),
             filteredProducts.isEmpty
                 ? Column(
-                    children: [
-                      Text(
-                        'No products found',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      SizedBox(height: 20),
-                      TextField(
-                        controller: _userNameController,
-                        decoration: InputDecoration(
-                          labelText: 'Your Name',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextField(
-                        controller: _productNameController,
-                        decoration: InputDecoration(
-                          labelText: 'Product Name',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextField(
-                        controller: _platformController,
-                        decoration: InputDecoration(
-                          labelText: 'Platform Needed',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: _submitForm,
-                        child: Text('Submit'),
-                      ),
-                    ],
-                  )
+              children: [
+                Text(
+                  'No products found',
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(height: 20),
+                TextField(
+                  controller: _userNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Your Name',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: _productNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Product Name',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  controller: _platformController,
+                  decoration: InputDecoration(
+                    labelText: 'Platform Needed',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: _submitForm,
+                  child: Text('Submit'),
+                ),
+              ],
+            )
                 : GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 3 / 4,
-                    ),
-                    itemCount: filteredProducts.length,
-                    itemBuilder: (context, index) {
-                      final product = filteredProducts[index];
-                      return Card(
-                        elevation: 5,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 3 / 4,
+              ),
+              itemCount: filteredProducts.length,
+              itemBuilder: (context, index) {
+                final product = filteredProducts[index];
+                return Card(
+                  elevation: 5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () => _launchURL(product.url),
+                        child: Image.asset(
+                          product.image,
+                          height: 100,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            GestureDetector(
-                              onTap: () => _launchURL(product.url),
-                              child: Image.asset(
-                                product.image,
-                                height: 100,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
+                            Text(
+                              product.name,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              product.price,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    product.name,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    product.price,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Available on: ${product.platform}',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                ],
+                            Text(
+                              'Available on: ${product.platform}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
                               ),
                             ),
                           ],
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
+                );
+              },
+            ),
           ],
         ),
       ),
     );
   }
+
 }
 
 class Product {
