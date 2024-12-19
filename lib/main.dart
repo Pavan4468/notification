@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'SignInPage.dart';
+import 'LoginScreen.dart';
 import 'dart:async';
 
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // Set the home page to SignInPage
-      home: const SignInPage(),
+      home: const LoginScreen(),
     );
   }
 }

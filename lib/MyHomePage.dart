@@ -1,8 +1,10 @@
+// main.dart
 import 'package:flutter/material.dart';
 import 'profile page.dart';
 import 'welcome.dart';
-import 'SearchScreen.dart';
-import 'NotificationScreen.dart';
+import 'searchscreen.dart';
+import 'notificationscreen.dart';
+import 'cart_screen.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -25,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _pages = [
     HomePage(),
-    SearchScreen(),
+    ProductScreen(),
     ProfilePage(),
   ];
 
@@ -42,6 +44,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _navigateToCartScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CartScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +60,10 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: Icon(Icons.notifications),
             onPressed: _navigateToNotificationScreen,
+          ),
+          IconButton(
+            icon: Icon(Icons.shopping_cart),
+            onPressed: _navigateToCartScreen,
           ),
         ],
       ),
@@ -76,5 +89,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-

@@ -1,32 +1,29 @@
 import 'dart:developer';
 
-
 import 'package:flutter/material.dart';
-import 'package:senior/LoginScreen.dart';
-import 'package:senior/auth_service.dart';
+import 'package:senior/SignUpPage.dart';
 import 'package:senior/widgets/button.dart';
 import 'package:senior/widgets/textfield.dart';
 
 import 'MyHomePage.dart';
+import 'auth_service.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _auth = AuthService();
 
-  final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
-    _name.dispose();
     _email.dispose();
     _password.dispose();
   }
@@ -39,17 +36,9 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Column(
           children: [
             const Spacer(),
-            const Text("Signup",
+            const Text("Login",
                 style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500)),
-            const SizedBox(
-              height: 50,
-            ),
-            CustomTextField(
-              hint: "Enter Name",
-              label: "Name",
-              controller: _name,
-            ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
             CustomTextField(
               hint: "Enter Email",
               label: "Email",
@@ -59,20 +48,20 @@ class _SignupScreenState extends State<SignupScreen> {
             CustomTextField(
               hint: "Enter Password",
               label: "Password",
-              isPassword: true,
               controller: _password,
             ),
             const SizedBox(height: 30),
             CustomButton(
-              label: "Signup",
-              onPressed: _signup,
+              label: "Login",
+              onPressed: _login,
             ),
             const SizedBox(height: 5),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               const Text("Already have an account? "),
               InkWell(
-                onTap: () => goToLogin(context),
-                child: const Text("Login", style: TextStyle(color: Colors.red)),
+                onTap: () => goToSignup(context),
+                child:
+                const Text("Signup", style: TextStyle(color: Colors.red)),
               )
             ]),
             const Spacer()
@@ -82,21 +71,22 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  goToLogin(BuildContext context) => Navigator.push(
+  goToSignup(BuildContext context) => Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => const LoginScreen()),
+    MaterialPageRoute(builder: (context) => const SignupScreen()),
   );
 
   goToHome(BuildContext context) => Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => MyHomePage(title: 'Home',)),
+    MaterialPageRoute(builder: (context) =>  MyHomePage(title: 'Home',)),
   );
 
-  _signup() async {
+  _login() async {
     final user =
-    await _auth.createUserWithEmailAndPassword(_email.text, _password.text);
+    await _auth.loginUserWithEmailAndPassword(_email.text, _password.text);
+
     if (user != null) {
-      log("User Created Succesfully");
+      log("User Logged In");
       goToHome(context);
     }
   }

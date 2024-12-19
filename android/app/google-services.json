@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1027605585654",
+    "project_id": "newprj-d630d",
+    "storage_bucket": "newprj-d630d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027605585654:android:d4b789e6ca4e2d214556d7",
+        "android_client_info": {
+          "package_name": "com.example.senior"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaPNwlIjM17XYcIlO3pHQnGS_wGR8leuw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

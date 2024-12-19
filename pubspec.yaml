@@ -30,10 +30,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  url_launcher: ^6.1.7
+  url_launcher: ^6.3.1
   flutter_animate: ^3.0.0
   lottie: ^2.0.0
-  webview_flutter: ^4.2.1 
+  webview_flutter: ^4.2.1
+  firebase_core: ^3.8.0
+  firebase_auth: ^5.3.3
+  firebase_database: ^11.1.6
+  http: ^1.1.0 
+  image_picker: ^1.0.0 
 
 
 
@@ -74,13 +79,13 @@ flutter:
   - assets/myntra.jpg
   - assets/flipkart.png
   - assets/ajio.png
-  - assets/banner.avif
+
   - assets/firdege.webp
   - assets/iphone.jpg
   - assets/shirt.jpg
   - assets/z fold.png
   - assets/ac.jpg
-  - assets/shoes.jpg
+  
   - assets/eco.jpg
   - assets/washing.jpeg
   - assets/glass.jpeg
@@ -89,9 +94,8 @@ flutter:
   - assets/earphones.jpeg
   - assets/fan.webp
   - assets/microwave.jpg
-  - assets/raj prakrash.jpg
-  - assets/on epluse.png
-  - assets/i watch.jpg
+ 
+
   - assets/myntra1.webp
   - assets/hoodie.webp
   - assets/allen.jpg
