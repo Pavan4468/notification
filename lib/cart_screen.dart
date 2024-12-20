@@ -15,6 +15,7 @@ class CartScreen extends StatelessWidget {
     {'name': 'Shirt', 'image': 'assets/shirt.jpg'},
     {'name': 'Samsung Z Fold', 'image': 'assets/z fold.png'},
     {'name': 'Air Conditioner', 'image': 'assets/ac.jpg'},
+    {'name': 'Laptop Bag', 'image': 'assets/baglaptop.jpeg'},
   ];
 
   @override

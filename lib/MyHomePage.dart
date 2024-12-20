@@ -1,9 +1,9 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:senior/NotificationScreen.dart';
 import 'profile page.dart';
 import 'welcome.dart';
 import 'searchscreen.dart';
-import 'notificationscreen.dart';
 import 'cart_screen.dart';
 
 void main() {
@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void _navigateToNotificationScreen() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => NotificationScreen()),
+      MaterialPageRoute(builder: (context) => NotiScreen()),
     );
   }
 
@@ -55,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(widget.title),
         actions: [
           IconButton(

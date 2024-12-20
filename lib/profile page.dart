@@ -91,6 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Profile'),
         backgroundColor: Colors.teal,
       ),
@@ -107,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     radius: 40,
                     backgroundImage: userAvatar != null
                         ? FileImage(userAvatar!)
-                        : AssetImage('assets/default_avatar.jpg') as ImageProvider,
+                        : AssetImage('assets/default iamge.png') as ImageProvider,
                   ),
                 ),
                 SizedBox(width: 16),

@@ -39,7 +39,8 @@ dependencies:
   firebase_database: ^11.1.6
   http: ^1.1.0 
   image_picker: ^1.0.0 
-
+  firebase_messaging: ^15.1.6
+  onesignal_flutter: ^5.1.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -84,7 +85,12 @@ flutter:
   - assets/iphone.jpg
   - assets/shirt.jpg
   - assets/z fold.png
-  - assets/ac.jpg
+  - assets/ac.jpg 
+  - assets/fibo e 4.jpg 
+  - assets/fibo e 3.jpg 
+  - assets/fibo 1.jpg 
+  - assets/fibo e .jpg
+  - assets/default iamge.png
   
   - assets/eco.jpg
   - assets/washing.jpeg
@@ -103,5 +109,6 @@ flutter:
   - assets/puma.webp
   - assets/nike.png
   - assets/new shirt.jpg
+  - assets/baglaptop.jpeg
 
  
